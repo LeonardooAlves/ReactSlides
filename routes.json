@@ -15,8 +15,39 @@
       "waitForSelector": "#content-ready"
     },
     {
-      "path": "/about",
-      "file": "about.pdf"
+      "path": "/ai_data_slides_part1",
+      "file": "slide1.pdf",
+      "waitForSelector": "#content-ready"
+    },
+    {
+      "path": "/ai_data_slides_part2",
+      "file": "slide2.pdf",
+      "waitForSelector": "#content-ready"
+    },
+    {
+      "path": "/ai_data_slides_part3",
+      "file": "slide3.pdf",
+      "waitForSelector": "#content-ready"
+    },
+    {
+      "path": "/ai_data_slides_part4",
+      "file": "slide4.pdf",
+      "waitForSelector": "#content-ready"
+    },
+    {
+      "path": "/ai_data_slides_part5",
+      "file": "slide5.pdf",
+      "waitForSelector": "#content-ready"
+    },
+    {
+      "path": "/ai_data_slides_part6",
+      "file": "slide6.pdf",
+      "waitForSelector": "#content-ready"
+    },
+    {
+      "path": "/ai_data_slides_part7",
+      "file": "slide7.pdf",
+      "waitForSelector": "#content-ready"
     }
   ]
 }

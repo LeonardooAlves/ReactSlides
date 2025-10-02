@@ -15,37 +15,37 @@
       "waitForSelector": "#content-ready"
     },
     {
-      "path": "/ai_data_slides_part1",
+      "path": "/slide1",
       "file": "slide1.pdf",
       "waitForSelector": "#content-ready"
     },
     {
-      "path": "/ai_data_slides_part2",
+      "path": "/slide2",
       "file": "slide2.pdf",
       "waitForSelector": "#content-ready"
     },
     {
-      "path": "/ai_data_slides_part3",
+      "path": "/slide3",
       "file": "slide3.pdf",
       "waitForSelector": "#content-ready"
     },
     {
-      "path": "/ai_data_slides_part4",
+      "path": "/slide4",
       "file": "slide4.pdf",
       "waitForSelector": "#content-ready"
     },
     {
-      "path": "/ai_data_slides_part5",
+      "path": "/slide5",
       "file": "slide5.pdf",
       "waitForSelector": "#content-ready"
     },
     {
-      "path": "/ai_data_slides_part6",
+      "path": "/slide6",
       "file": "slide6.pdf",
       "waitForSelector": "#content-ready"
     },
     {
-      "path": "/ai_data_slides_part7",
+      "path": "/slide7",
       "file": "slide7.pdf",
       "waitForSelector": "#content-ready"
     }

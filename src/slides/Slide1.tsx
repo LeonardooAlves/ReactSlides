@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Database, AlertTriangle } from 'lucide-react';
 
-const SlideShow = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+const SlideShow: React.FC = () => {
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
 
   const slides = [
     {
@@ -151,17 +151,10 @@ const SlideShow = () => {
       ],
       note: 'We will address these throughout the session'
     }
-  ];
+  ] as const;
 
-  const nextSlide = () => {
-    if (currentSlide < slides.length - 1) setCurrentSlide(currentSlide + 1);
-  };
-
-  const prevSlide = () => {
-    if (currentSlide > 0) setCurrentSlide(currentSlide - 1);
-  };
-
-  const renderSlide = (slide) => {
+  // ✅ Add a type on `slide` to avoid implicit any
+  const renderSlide = (slide: any) => {
     switch (slide.type) {
       case 'title':
         return (
@@ -181,7 +174,7 @@ const SlideShow = () => {
             <h2 className="text-4xl font-bold mb-2 text-blue-800">{slide.title}</h2>
             <p className="text-xl text-gray-600 mb-8">Total Duration: {slide.duration}</p>
             <div className="grid grid-cols-1 gap-4">
-              {slide.parts.map((part, idx) => (
+              {slide.parts.map((part: any, idx: number) => (
                 <div key={idx} className={`flex items-center p-4 rounded-lg ${idx === 0 ? 'bg-blue-100 border-2 border-blue-500' : 'bg-gray-100'}`}>
                   <div className={`w-20 h-20 rounded-full flex items-center justify-center text-xl font-bold mr-6 ${idx === 0 ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-700'}`}>
                     {part.name}
@@ -202,7 +195,7 @@ const SlideShow = () => {
             <h2 className="text-4xl font-bold mb-3 text-blue-800">{slide.title}</h2>
             <p className="text-xl text-gray-600 mb-8">{slide.subtitle}</p>
             <div className="space-y-5">
-              {slide.objectives.map((obj, idx) => (
+              {slide.objectives.map((obj: any, idx: number) => (
                 <div key={idx} className="flex items-start bg-blue-50 p-5 rounded-lg border-l-4 border-blue-500">
                   <span className="text-3xl mr-5">{obj.icon}</span>
                   <p className="text-xl leading-relaxed">{obj.text}</p>
@@ -225,7 +218,7 @@ const SlideShow = () => {
                 </div>
               </div>
               <div className="space-y-4 mt-6">
-                {slide.sections.map((section, idx) => (
+                {slide.sections.map((section: any, idx: number) => (
                   <div key={idx} className="bg-white p-4 rounded border-l-4 border-red-400">
                     <h4 className="font-bold text-lg mb-2 text-gray-800">{section.label}</h4>
                     <p className="text-lg text-gray-700">{section.content}</p>
@@ -245,7 +238,7 @@ const SlideShow = () => {
             <h2 className="text-4xl font-bold mb-3 text-blue-800">{slide.title}</h2>
             <p className="text-xl text-gray-600 mb-8">{slide.subtitle}</p>
             <div className="grid grid-cols-2 gap-6">
-              {slide.points.map((point, idx) => (
+              {slide.points.map((point: any, idx: number) => (
                 <div key={idx} className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg border-2 border-blue-200">
                   <div className="text-4xl mb-4">{point.icon}</div>
                   <h3 className="text-xl font-bold mb-3 text-blue-900">{point.title}</h3>
@@ -266,7 +259,7 @@ const SlideShow = () => {
                 <h3 className="text-xl font-bold mb-4 text-center text-gray-800">{slide.formula.title}</h3>
                 <p className="font-mono text-2xl text-center mb-6 text-blue-700">{slide.formula.equation}</p>
                 <div className="grid grid-cols-3 gap-4">
-                  {slide.formula.components.map((comp, idx) => (
+                  {slide.formula.components.map((comp: any, idx: number) => (
                     <div key={idx} className="text-center">
                       <p className="font-mono font-bold text-lg text-blue-800 mb-2">{comp.term}</p>
                       <p className="text-sm text-gray-600 mb-1">{comp.cause}</p>
@@ -291,7 +284,7 @@ const SlideShow = () => {
               <div className="bg-gray-100 p-6 rounded-lg border-2 border-gray-300">
                 <h3 className="text-2xl font-bold mb-5 text-gray-800 text-center">{slide.left.title}</h3>
                 <ul className="space-y-3">
-                  {slide.left.items.map((item, idx) => (
+                  {slide.left.items.map((item: string, idx: number) => (
                     <li key={idx} className="flex items-start text-lg">
                       <span className="text-gray-600 mr-3 font-bold">•</span>
                       <span>{item}</span>
@@ -302,7 +295,7 @@ const SlideShow = () => {
               <div className="bg-blue-100 p-6 rounded-lg border-2 border-blue-400">
                 <h3 className="text-2xl font-bold mb-5 text-blue-900 text-center">{slide.right.title}</h3>
                 <ul className="space-y-3">
-                  {slide.right.items.map((item, idx) => (
+                  {slide.right.items.map((item: string, idx: number) => (
                     <li key={idx} className="flex items-start text-lg">
                       <span className="text-blue-600 mr-3 font-bold">•</span>
                       <span>{item}</span>
@@ -325,7 +318,7 @@ const SlideShow = () => {
             <h2 className="text-4xl font-bold mb-3 text-blue-800">{slide.title}</h2>
             <p className="text-xl text-gray-600 mb-8">{slide.subtitle}</p>
             <div className="space-y-5">
-              {slide.mechanisms.map((mech, idx) => (
+              {slide.mechanisms.map((mech: any, idx: number) => (
                 <div key={idx} className="bg-gradient-to-r from-red-50 to-orange-50 p-6 rounded-lg border-l-4 border-red-500">
                   <div className="flex items-start">
                     <span className="text-4xl mr-4">{mech.icon}</span>
@@ -349,7 +342,7 @@ const SlideShow = () => {
             <h2 className="text-4xl font-bold mb-2 text-blue-800">{slide.title}</h2>
             <p className="text-xl text-gray-600 mb-6">{slide.subtitle}</p>
             <div className="space-y-4 mb-6">
-              {slide.applications.map((app, idx) => (
+              {slide.applications.map((app: any, idx: number) => (
                 <div key={idx} className="bg-white border-2 border-blue-200 rounded-lg p-5">
                   <div className="grid grid-cols-4 gap-4 items-center">
                     <div><h3 className="font-bold text-xl text-blue-900">{app.domain}</h3></div>
@@ -381,7 +374,7 @@ const SlideShow = () => {
             <h2 className="text-4xl font-bold mb-2 text-blue-800">{slide.title}</h2>
             <p className="text-xl text-gray-600 mb-6">{slide.subtitle}</p>
             <div className="space-y-4 mb-6">
-              {slide.findings.map((finding, idx) => (
+              {slide.findings.map((finding: any, idx: number) => (
                 <div key={idx} className="bg-white border-l-4 border-orange-500 p-5 rounded shadow-sm">
                   <div className="flex items-start">
                     <div className="bg-orange-500 text-white font-bold px-4 py-2 rounded mr-4">{finding.year}</div>
@@ -405,7 +398,7 @@ const SlideShow = () => {
           <div className="p-12 h-full flex flex-col bg-gradient-to-br from-blue-50 to-white">
             <h2 className="text-4xl font-bold mb-8 text-blue-800">{slide.title}</h2>
             <div className="space-y-4 mb-8">
-              {slide.keyPoints.map((kp, idx) => (
+              {slide.keyPoints.map((kp: any, idx: number) => (
                 <div key={idx} className="bg-white border-l-4 border-blue-500 p-5 rounded-lg shadow-sm">
                   <h3 className="font-bold text-xl text-blue-900 mb-2">{idx + 1}. {kp.point}</h3>
                   <p className="text-lg text-gray-700">{kp.detail}</p>
@@ -424,7 +417,7 @@ const SlideShow = () => {
             <h2 className="text-4xl font-bold mb-3 text-purple-800 text-center">{slide.title}</h2>
             <p className="text-xl text-gray-600 mb-10 text-center">{slide.subtitle}</p>
             <div className="space-y-6 max-w-4xl">
-              {slide.questions.map((q, idx) => (
+              {slide.questions.map((q: string, idx: number) => (
                 <div key={idx} className="bg-white p-6 rounded-lg shadow-md border-l-4 border-purple-500">
                   <div className="flex items-start">
                     <span className="text-3xl mr-4">🤔</span>
@@ -446,6 +439,14 @@ const SlideShow = () => {
           </div>
         );
     }
+  };
+
+  const nextSlide = () => {
+    if (currentSlide < slides.length - 1) setCurrentSlide(currentSlide + 1);
+  };
+
+  const prevSlide = () => {
+    if (currentSlide > 0) setCurrentSlide(currentSlide - 1);
   };
 
   return (

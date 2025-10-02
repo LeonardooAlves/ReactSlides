@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Download, Target, TrendingUp } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, Target } from 'lucide-react';
 
-const SlideShow = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+type AnySlide = Record<string, any>;
+
+const SlideShow: React.FC = () => {
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
 
   const slides = [
     {
@@ -66,7 +69,8 @@ const SlideShow = () => {
     {
       type: 'samplingFoundation',
       title: 'Sampling: Statistical Foundation',
-      definition: 'Sampling is the process of selecting a subset from a population such that statistical properties can be inferred',
+      definition:
+        'Sampling is the process of selecting a subset from a population such that statistical properties can be inferred',
       notation: {
         population: 'N = Population size',
         sample: 'n = Sample size',
@@ -183,18 +187,8 @@ const SlideShow = () => {
       formula: 'k = N/n (sampling interval), random start r ∈ [1, k]',
       statisticalProperty: 'Equivalent to SRS if list is randomly ordered',
       variance: 'Can be more or less efficient than SRS depending on ordering',
-      advantages: [
-        'Simple to implement',
-        'Spreads sample evenly across population',
-        'Easy to explain and audit',
-        'Good for quality control applications'
-      ],
-      limitations: [
-        'Severe bias if periodicity matches k',
-        'Cannot estimate variance without assumptions',
-        'Inflexible once k is chosen',
-        'Requires ordered list of population'
-      ],
+      advantages: ['Simple to implement', 'Spreads sample evenly across population', 'Easy to explain and audit', 'Good for quality control applications'],
+      limitations: ['Severe bias if periodicity matches k', 'Cannot estimate variance without assumptions', 'Inflexible once k is chosen', 'Requires ordered list of population'],
       aiExample: {
         scenario: 'Time-Series Data for Forecasting',
         implementation: 'Select every 10th data point to reduce autocorrelation',
@@ -211,20 +205,10 @@ const SlideShow = () => {
       subtitle: 'Maintain random sample from stream without knowing total size',
       algorithm: {
         name: 'Reservoir Sampling Algorithm',
-        steps: [
-          'Keep first k items in reservoir',
-          'For item i > k: include with probability k/i',
-          'If included, randomly replace one item in reservoir',
-          'Continue until stream ends'
-        ],
+        steps: ['Keep first k items in reservoir', 'For item i > k: include with probability k/i', 'If included, randomly replace one item in reservoir', 'Continue until stream ends'],
         guarantee: 'Each item has equal probability k/n of being in final sample'
       },
-      properties: {
-        space: 'O(k) - only store k items',
-        time: 'O(n) - single pass through data',
-        randomness: 'Uniform random sample at any point',
-        adaptivity: 'Works without knowing n in advance'
-      },
+      properties: { space: 'O(k) - only store k items', time: 'O(n) - single pass through data', randomness: 'Uniform random sample at any point', adaptivity: 'Works without knowing n in advance' },
       aiExample: {
         scenario: 'Sampling from Twitter Firehose',
         problem: 'Unknown total tweets, continuous stream',
@@ -242,70 +226,23 @@ const SlideShow = () => {
       formula: 'E_p[f(x)] = E_q[f(x) × p(x)/q(x)]',
       purpose: 'Reduce variance of Monte Carlo estimates by focusing on important regions',
       aiApplications: [
-        {
-          name: 'Hard Example Mining',
-          description: 'Oversample examples where model performs poorly',
-          example: 'Object detection: Sample images with small objects more frequently',
-          benefit: 'Faster convergence, better performance on difficult cases'
-        },
-        {
-          name: 'Rare Event Modeling',
-          description: 'Oversample rare but important events',
-          example: 'Fraud detection: Sample fraudulent transactions at higher rate',
-          benefit: 'Sufficient data to learn rare patterns'
-        },
-        {
-          name: 'Variance Reduction',
-          description: 'Sample from regions contributing most to expectation',
-          example: 'Reinforcement learning: Sample high-reward trajectories',
-          benefit: 'More efficient learning'
-        }
+        { name: 'Hard Example Mining', description: 'Oversample examples where model performs poorly', example: 'Object detection: Sample images with small objects more frequently', benefit: 'Faster convergence, better performance on difficult cases' },
+        { name: 'Rare Event Modeling', description: 'Oversample rare but important events', example: 'Fraud detection: Sample fraudulent transactions at higher rate', benefit: 'Sufficient data to learn rare patterns' },
+        { name: 'Variance Reduction', description: 'Sample from regions contributing most to expectation', example: 'Reinforcement learning: Sample high-reward trajectories', benefit: 'More efficient learning' }
       ],
-      implementation: {
-        step1: 'Define importance function q(x) ∝ importance',
-        step2: 'Sample from q(x) instead of uniform',
-        step3: 'During training, weight examples by p(x)/q(x)',
-        caveat: 'Need good estimate of importance - circular problem'
-      }
+      implementation: { step1: 'Define importance function q(x) ∝ importance', step2: 'Sample from q(x) instead of uniform', step3: 'During training, weight examples by p(x)/q(x)', caveat: 'Need good estimate of importance - circular problem' }
     },
     {
       type: 'advancedTechnique',
       title: 'Active Learning as Adaptive Sampling',
       subtitle: 'Iteratively select most informative samples to label',
       framework: 'Adaptive sampling strategy that uses model feedback',
-      process: [
-        '1. Train initial model on small labeled dataset',
-        '2. Apply model to unlabeled pool',
-        '3. Select most informative examples (high uncertainty, disagreement)',
-        '4. Get human labels for selected examples',
-        '5. Add to training set, retrain model',
-        '6. Repeat until budget exhausted or performance satisfactory'
-      ],
+      process: ['1. Train initial model on small labeled dataset', '2. Apply model to unlabeled pool', '3. Select most informative examples (high uncertainty, disagreement)', '4. Get human labels for selected examples', '5. Add to training set, retrain model', '6. Repeat until budget exhausted or performance satisfactory'],
       selectionStrategies: [
-        {
-          name: 'Uncertainty Sampling',
-          criterion: 'Select examples where model is most uncertain',
-          measure: 'Entropy, margin, least confident',
-          example: 'Classification: Select samples near decision boundary'
-        },
-        {
-          name: 'Query by Committee',
-          criterion: 'Select examples where ensemble models disagree',
-          measure: 'Vote entropy, KL divergence',
-          example: 'Train multiple models, label where they disagree'
-        },
-        {
-          name: 'Expected Model Change',
-          criterion: 'Select examples that would most change model',
-          measure: 'Gradient magnitude, parameter change',
-          example: 'Examples that would have largest impact on model weights'
-        },
-        {
-          name: 'Expected Error Reduction',
-          criterion: 'Select examples that would most reduce expected error',
-          measure: 'Expected future loss',
-          example: 'Computationally expensive but theoretically optimal'
-        }
+        { name: 'Uncertainty Sampling', criterion: 'Select examples where model is most uncertain', measure: 'Entropy, margin, least confident', example: 'Classification: Select samples near decision boundary' },
+        { name: 'Query by Committee', criterion: 'Select examples where ensemble models disagree', measure: 'Vote entropy, KL divergence', example: 'Train multiple models, label where they disagree' },
+        { name: 'Expected Model Change', criterion: 'Select examples that would most change model', measure: 'Gradient magnitude, parameter change', example: 'Examples that would have largest impact on model weights' },
+        { name: 'Expected Error Reduction', criterion: 'Select examples that would most reduce expected error', measure: 'Expected future loss', example: 'Computationally expensive but theoretically optimal' }
       ],
       aiExample: {
         scenario: 'Medical Image Annotation',
@@ -337,67 +274,26 @@ const SlideShow = () => {
         {
           aspect: 'Train/Validation/Test Split',
           importance: 'Critical for unbiased evaluation',
-          guidelines: [
-            'Typical split: 70/15/15 or 80/10/10',
-            'Use stratified sampling for split to maintain class balance',
-            'Test set must be completely held out - never used in training',
-            'Validation set for hyperparameter tuning',
-            'For time series: Temporal split (train on past, test on future)'
-          ],
-          common_mistakes: [
-            'Data leakage: Test data used in feature engineering',
-            'Information leakage: Future data influences past predictions',
-            'Unrepresentative test set: Not sampled from deployment distribution'
-          ]
+          guidelines: ['Typical split: 70/15/15 or 80/10/10', 'Use stratified sampling for split to maintain class balance', 'Test set must be completely held out - never used in training', 'Validation set for hyperparameter tuning', 'For time series: Temporal split (train on past, test on future)'],
+          common_mistakes: ['Data leakage: Test data used in feature engineering', 'Information leakage: Future data influences past predictions', 'Unrepresentative test set: Not sampled from deployment distribution']
         },
         {
           aspect: 'Imbalanced Data Handling',
           importance: 'Central to many real-world AI applications',
-          techniques: [
-            'Stratified sampling: Ensure minimum representation',
-            'Oversampling minority: Duplicate minority class examples',
-            'Undersampling majority: Reduce majority class examples',
-            'SMOTE: Synthetic minority oversampling (interpolate between examples)',
-            'Class weights: Penalize minority class errors more heavily in loss'
-          ],
-          decision_factors: [
-            'Degree of imbalance (2:1 vs 100:1)',
-            'Absolute minority class size (1000 samples vs 10 samples)',
-            'Cost of errors (false positive vs false negative)',
-            'Available computational resources'
-          ]
+          techniques: ['Stratified sampling: Ensure minimum representation', 'Oversampling minority: Duplicate minority class examples', 'Undersampling majority: Reduce majority class examples', 'SMOTE: Synthetic minority oversampling (interpolate between examples)', 'Class weights: Penalize minority class errors more heavily in loss'],
+          decision_factors: ['Degree of imbalance (2:1 vs 100:1)', 'Absolute minority class size (1000 samples vs 10 samples)', 'Cost of errors (false positive vs false negative)', 'Available computational resources']
         },
         {
           aspect: 'Sample Size Determination',
           importance: 'Balance between performance and cost',
-          rules_of_thumb: [
-            'Traditional ML: 10x features per class minimum',
-            'Deep learning: 1000+ per class for decent performance',
-            'Rule of thumb: More complex model = more data needed',
-            'Learning curves: Plot performance vs. sample size to guide'
-          ],
-          statistical_approach: [
-            'Power analysis: Determine n for desired statistical power',
-            'Confidence intervals: Achieve desired precision',
-            'Effect size: Larger effect = smaller n needed',
-            'For AI: Often data-driven - collect until performance plateaus'
-          ]
+          rules_of_thumb: ['Traditional ML: 10x features per class minimum', 'Deep learning: 1000+ per class for decent performance', 'Rule of thumb: More complex model = more data needed', 'Learning curves: Plot performance vs. sample size to guide'],
+          statistical_approach: ['Power analysis: Determine n for desired statistical power', 'Confidence intervals: Achieve desired precision', 'Effect size: Larger effect = smaller n needed', 'For AI: Often data-driven - collect until performance plateaus']
         },
         {
           aspect: 'Sampling from Multiple Sources',
           importance: 'Common in real-world data pipelines',
-          challenges: [
-            'Different distributions across sources',
-            'Different quality levels',
-            'Different costs per sample',
-            'Different update frequencies'
-          ],
-          strategies: [
-            'Stratify by source to ensure representation',
-            'Weight by source quality/importance',
-            'Monitor per-source performance',
-            'Adaptive sampling: Adjust rates based on performance'
-          ]
+          challenges: ['Different distributions across sources', 'Different quality levels', 'Different costs per sample', 'Different update frequencies'],
+          strategies: ['Stratify by source to ensure representation', 'Weight by source quality/importance', 'Monitor per-source performance', 'Adaptive sampling: Adjust rates based on performance']
         }
       ]
     },
@@ -446,34 +342,16 @@ const SlideShow = () => {
       type: 'summary',
       title: 'Part 3 Summary: Sampling Techniques',
       keyPoints: [
-        {
-          point: 'Sampling is essential',
-          detail: 'Cannot process entire populations - must sample intelligently to preserve learnable patterns'
-        },
-        {
-          point: 'Stratified sampling for AI',
-          detail: 'Almost always preferred for classification - ensures class balance and representation'
-        },
-        {
-          point: 'Advanced techniques',
-          detail: 'Reservoir sampling for streams, importance sampling for hard examples, active learning for expensive labels'
-        },
-        {
-          point: 'Statistical properties matter',
-          detail: 'Each technique has trade-offs in bias, variance, and efficiency'
-        },
-        {
-          point: 'Practical considerations',
-          detail: 'Train/test split, imbalanced data, sample size, multiple sources all require careful thought'
-        },
-        {
-          point: 'Document and validate',
-          detail: 'Always document sampling strategy and validate sample representativeness'
-        }
+        { point: 'Sampling is essential', detail: 'Cannot process entire populations - must sample intelligently to preserve learnable patterns' },
+        { point: 'Stratified sampling for AI', detail: 'Almost always preferred for classification - ensures class balance and representation' },
+        { point: 'Advanced techniques', detail: 'Reservoir sampling for streams, importance sampling for hard examples, active learning for expensive labels' },
+        { point: 'Statistical properties matter', detail: 'Each technique has trade-offs in bias, variance, and efficiency' },
+        { point: 'Practical considerations', detail: 'Train/test split, imbalanced data, sample size, multiple sources all require careful thought' },
+        { point: 'Document and validate', detail: 'Always document sampling strategy and validate sample representativeness' }
       ],
       transition: 'Next: What are the main challenges in data collection and sampling, and how do we mitigate them?'
     }
-  ];
+  ] as const;
 
   const nextSlide = () => {
     if (currentSlide < slides.length - 1) setCurrentSlide(currentSlide + 1);
@@ -496,46 +374,44 @@ const SlideShow = () => {
     URL.revokeObjectURL(url);
   };
 
-  const generateFullHTML = () => {
+  const generateFullHTML = (): string => {
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Part 3: Sampling Techniques - Theory & Practice</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
-        .slide { background: white; margin: 20px auto; padding: 40px; max-width: 900px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); page-break-after: always; }
-        h1 { color: #6f42c1; font-size: 32px; margin-bottom: 10px; }
-        h2 { color: #8b5cf6; font-size: 24px; margin-top: 20px; }
-        h3 { color: #333; font-size: 20px; margin-top: 15px; }
-        .subtitle { color: #666; font-size: 18px; margin-bottom: 20px; }
-        .definition { background: #e9d5ff; padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .box { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 10px 0; }
-        ul { line-height: 1.8; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { padding: 12px; text-align: left; border: 1px solid #ddd; }
-        th { background: #6f42c1; color: white; }
-        @media print { .slide { page-break-after: always; } }
-    </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 3: Sampling Techniques - Theory & Practice</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#f5f5f5}
+.slide{background:#fff;margin:20px auto;padding:40px;max-width:900px;box-shadow:0 2px 8px rgba(0,0,0,.1);page-break-after:always}
+h1{color:#6f42c1;font-size:32px;margin-bottom:10px}
+h2{color:#8b5cf6;font-size:24px;margin-top:20px}
+h3{color:#333;font-size:20px;margin-top:15px}
+.subtitle{color:#666;font-size:18px;margin-bottom:20px}
+.box{background:#f9f9f9;padding:15px;border-radius:5px;margin:10px 0}
+ul{line-height:1.8}
+table{width:100%;border-collapse:collapse;margin:20px 0}
+th,td{padding:12px;text-align:left;border:1px solid #ddd}
+th{background:#6f42c1;color:#fff}
+@media print{.slide{page-break-after:always}}
+</style>
 </head>
 <body>
-    ${slides.map((slide, idx) => generateSlideHTML(slide, idx + 1)).join('')}
+${slides.map((s: AnySlide, i: number) => generateSlideHTML(s, i + 1)).join('')}
 </body>
 </html>`;
   };
 
-  const generateSlideHTML = (slide, num) => {
+  const generateSlideHTML = (slide: AnySlide, _num: number): string => {
     let content = '';
     switch (slide.type) {
       case 'title':
-        content = `<h1 style="text-align: center; margin-top: 100px;">${slide.content.title}</h1>
-          <h2 style="text-align: center;">${slide.content.subtitle}</h2>
-          <p style="text-align: center;">${slide.content.details}<br>${slide.content.course}</p>`;
+        content = `<h1 style="text-align:center;margin-top:100px;">${slide.content.title}</h1>
+        <h2 style="text-align:center;">${slide.content.subtitle}</h2>
+        <p style="text-align:center;">${slide.content.details}<br>${slide.content.course}</p>`;
         break;
       case 'overview':
         content = `<h1>${slide.title}</h1><p class="subtitle">${slide.duration}</p>
-          <ul>${slide.topics.map(t => `<li>${t}</li>`).join('')}</ul>`;
+        <ul>${(slide.topics as string[]).map((t) => `<li>${t}</li>`).join('')}</ul>`;
         break;
       default:
         content = `<h1>${slide.title || 'Slide'}</h1><p>Content for ${slide.type}</p>`;
@@ -543,27 +419,26 @@ const SlideShow = () => {
     return `<div class="slide">${content}</div>`;
   };
 
-  const renderSlide = (slide) => {
+  const renderSlide = (slide: AnySlide) => {
     switch (slide.type) {
       case 'title':
         return (
           <div className="flex flex-col items-center justify-center h-full bg-gradient-to-br from-purple-600 to-purple-800 text-white p-12">
             <Target className="w-24 h-24 mb-8" />
             <h1 className="text-5xl font-bold mb-4 text-center">{slide.content.title}</h1>
-            <div className="h-1 w-32 bg-white mb-6"></div>
+            <div className="h-1 w-32 bg-white mb-6" />
             <p className="text-2xl mb-3 font-semibold">{slide.content.subtitle}</p>
             <p className="text-xl opacity-90 mb-2">{slide.content.details}</p>
             <p className="text-lg opacity-80">{slide.content.course}</p>
           </div>
         );
-
       case 'overview':
         return (
           <div className="p-12 h-full flex flex-col">
             <h2 className="text-4xl font-bold mb-3 text-purple-800">{slide.title}</h2>
             <p className="text-xl text-gray-600 mb-6">Duration: {slide.duration}</p>
             <div className="space-y-4">
-              {slide.topics.map((topic, idx) => (
+              {(slide.topics as string[]).map((topic: string, idx: number) => (
                 <div key={idx} className="flex items-start bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
                   <span className="text-purple-600 font-bold mr-4 text-xl">{idx + 1}</span>
                   <p className="text-lg">{topic}</p>
@@ -572,14 +447,13 @@ const SlideShow = () => {
             </div>
           </div>
         );
-
       case 'whySampling':
         return (
           <div className="p-10 h-full flex flex-col overflow-y-auto">
             <h2 className="text-3xl font-bold mb-2 text-purple-800">{slide.title}</h2>
             <p className="text-lg text-gray-600 mb-6">{slide.subtitle}</p>
             <div className="space-y-4">
-              {slide.reasons.map((reason, idx) => (
+              {(slide.reasons as AnySlide[]).map((reason: AnySlide, idx: number) => (
                 <div key={idx} className="bg-white border-l-4 border-purple-500 p-4 rounded shadow-sm">
                   <div className="flex items-start mb-2">
                     <span className="text-3xl mr-3">{reason.icon}</span>
@@ -596,7 +470,6 @@ const SlideShow = () => {
             </div>
           </div>
         );
-
       case 'samplingFoundation':
         return (
           <div className="p-12 h-full flex flex-col overflow-y-auto">
@@ -607,16 +480,14 @@ const SlideShow = () => {
             <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6">
               <h3 className="text-xl font-bold mb-4 text-gray-800">Key Notation:</h3>
               <div className="grid grid-cols-2 gap-3">
-                {Object.entries(slide.notation).map(([key, value], idx) => (
-                  <div key={idx} className="font-mono text-sm bg-gray-50 p-2 rounded">
-                    {value}
-                  </div>
+                {Object.entries(slide.notation as Record<string, string>).map(([_, value]: [string, string], idx: number) => (
+                  <div key={idx} className="font-mono text-sm bg-gray-50 p-2 rounded">{value}</div>
                 ))}
               </div>
             </div>
             <div className="space-y-3">
               <h3 className="text-xl font-bold text-gray-800">Statistical Goals:</h3>
-              {slide.goals.map((goal, idx) => (
+              {(slide.goals as string[]).map((goal: string, idx: number) => (
                 <div key={idx} className="flex items-start bg-green-50 p-3 rounded">
                   <span className="text-green-600 mr-3 font-bold">✓</span>
                   <p className="text-base">{goal}</p>
@@ -625,7 +496,6 @@ const SlideShow = () => {
             </div>
           </div>
         );
-
       case 'technique':
         return (
           <div className="p-8 h-full flex flex-col overflow-y-auto">
@@ -635,79 +505,62 @@ const SlideShow = () => {
               </div>
               <h2 className="text-3xl font-bold text-purple-800">{slide.title}</h2>
             </div>
-            
             <div className="bg-purple-50 p-4 rounded-lg mb-4">
               <p className="text-lg font-semibold mb-2"><span className="text-purple-800">Method:</span> {slide.method}</p>
               <p className="text-base font-mono bg-white p-3 rounded mb-2">{slide.formula}</p>
               <p className="text-base"><span className="font-semibold">Property:</span> {slide.statisticalProperty}</p>
               {slide.variance && <p className="text-sm text-gray-700 mt-2">{slide.variance}</p>}
             </div>
-
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <h3 className="font-bold text-green-800 mb-2">✓ Advantages:</h3>
                 <ul className="space-y-1">
-                  {slide.advantages.map((adv, idx) => (
-                    <li key={idx} className="text-sm">• {adv}</li>
-                  ))}
+                  {(slide.advantages as string[]).map((adv: string, idx: number) => <li key={idx} className="text-sm">• {adv}</li>)}
                 </ul>
               </div>
               <div>
                 <h3 className="font-bold text-red-800 mb-2">⚠ Limitations:</h3>
                 <ul className="space-y-1">
-                  {slide.limitations.map((lim, idx) => (
-                    <li key={idx} className="text-sm">• {lim}</li>
-                  ))}
+                  {(slide.limitations as string[]).map((lim: string, idx: number) => <li key={idx} className="text-sm">• {lim}</li>)}
                 </ul>
               </div>
             </div>
-
             <div className="bg-gray-100 p-4 rounded-lg">
               <h3 className="text-lg font-bold mb-2 text-gray-800">AI Example: {slide.aiExample.scenario}</h3>
-              <p className="text-sm mb-1"><span className="font-semibold">Implementation:</span> {slide.aiExample.implementation}</p>
-              <p className="text-sm mb-1"><span className="font-semibold">Dataset:</span> {slide.aiExample.dataset}</p>
-              {slide.aiExample.srsResult && <p className="text-sm mb-1"><span className="font-semibold">SRS Result:</span> {slide.aiExample.srsResult}</p>}
-              {slide.aiExample.stratifiedApproach && <p className="text-sm mb-1"><span className="font-semibold">Approach:</span> {slide.aiExample.stratifiedApproach}</p>}
-              {slide.aiExample.approach && <p className="text-sm mb-1"><span className="font-semibold">Approach:</span> {slide.aiExample.approach}</p>}
-              {slide.aiExample.problem && <p className="text-sm mb-1 text-red-700"><span className="font-semibold">Problem:</span> {slide.aiExample.problem}</p>}
-              {slide.aiExample.risk && <p className="text-sm mb-1 text-red-700"><span className="font-semibold">Risk:</span> {slide.aiExample.risk}</p>}
-              {slide.aiExample.result && <p className="text-sm mb-1 text-green-700"><span className="font-semibold">Result:</span> {slide.aiExample.result}</p>}
-              {slide.aiExample.benefit && <p className="text-sm mb-1 text-green-700"><span className="font-semibold">Benefit:</span> {slide.aiExample.benefit}</p>}
+              {Object.entries(slide.aiExample as Record<string, string>).map(([k, v], idx) =>
+                k === 'scenario' ? null : (
+                  <p key={idx} className={`text-sm mb-1 ${k === 'problem' || k === 'risk' ? 'text-red-700' : (k === 'result' || k === 'benefit' ? 'text-green-700' : '')}`}>
+                    <span className="font-semibold capitalize">{k.replace(/([A-Z])/g, ' $1')}:</span> {v}
+                  </p>
+                )
+              )}
               <p className="text-sm mt-2 font-semibold text-purple-900">💡 {slide.aiExample.lesson}</p>
             </div>
-
             {slide.allocation && (
               <div className="mt-4 bg-blue-50 p-3 rounded">
                 <h3 className="font-bold text-blue-900 mb-2">Allocation Strategies:</h3>
-                {slide.allocation.map((alloc, idx) => (
-                  <p key={idx} className="text-xs mb-1">• {alloc}</p>
-                ))}
+                {(slide.allocation as string[]).map((alloc: string, idx: number) => <p key={idx} className="text-xs mb-1">• {alloc}</p>)}
               </div>
             )}
           </div>
         );
-
       case 'advancedTechnique':
         return (
           <div className="p-8 h-full flex flex-col overflow-y-auto">
             <h2 className="text-3xl font-bold mb-2 text-purple-800">{slide.title}</h2>
             <p className="text-lg text-gray-600 mb-4">{slide.subtitle}</p>
-
             {slide.algorithm && (
               <div className="bg-purple-50 p-4 rounded-lg mb-4">
                 <h3 className="font-bold text-purple-900 mb-3">{slide.algorithm.name}</h3>
                 <ol className="space-y-2">
-                  {slide.algorithm.steps.map((step, idx) => (
-                    <li key={idx} className="text-sm">{step}</li>
-                  ))}
+                  {(slide.algorithm.steps as string[]).map((step: string, idx: number) => <li key={idx} className="text-sm">{step}</li>)}
                 </ol>
                 <p className="text-sm mt-3 bg-white p-2 rounded"><strong>Guarantee:</strong> {slide.algorithm.guarantee}</p>
               </div>
             )}
-
             {slide.properties && (
               <div className="grid grid-cols-2 gap-3 mb-4">
-                {Object.entries(slide.properties).map(([key, value], idx) => (
+                {Object.entries(slide.properties as Record<string, string>).map(([key, value], idx: number) => (
                   <div key={idx} className="bg-white border p-3 rounded">
                     <p className="font-semibold text-sm text-gray-700 capitalize">{key}:</p>
                     <p className="text-sm">{value}</p>
@@ -715,7 +568,6 @@ const SlideShow = () => {
                 ))}
               </div>
             )}
-
             {slide.concept && (
               <div className="bg-blue-50 p-4 rounded-lg mb-4">
                 <p className="text-base mb-2"><strong>Concept:</strong> {slide.concept}</p>
@@ -723,11 +575,10 @@ const SlideShow = () => {
                 {slide.purpose && <p className="text-sm mt-2">{slide.purpose}</p>}
               </div>
             )}
-
             {slide.aiApplications && (
               <div className="space-y-3 mb-4">
                 <h3 className="font-bold text-gray-800">AI Applications:</h3>
-                {slide.aiApplications.map((app, idx) => (
+                {(slide.aiApplications as AnySlide[]).map((app: AnySlide, idx: number) => (
                   <div key={idx} className="bg-white border-l-4 border-green-500 p-3 rounded">
                     <h4 className="font-bold text-green-900 mb-1">{app.name}</h4>
                     <p className="text-sm mb-1">{app.description}</p>
@@ -737,31 +588,26 @@ const SlideShow = () => {
                 ))}
               </div>
             )}
-
             {slide.implementation && (
               <div className="bg-yellow-50 p-3 rounded-lg mb-4">
                 <h3 className="font-bold text-yellow-900 mb-2">Implementation:</h3>
-                {Object.entries(slide.implementation).map(([key, value], idx) => (
+                {Object.entries(slide.implementation as Record<string, string>).map(([key, value], idx: number) => (
                   <p key={idx} className="text-sm mb-1">{key === 'caveat' ? '⚠️ ' : ''}<strong>{key}:</strong> {value}</p>
                 ))}
               </div>
             )}
-
             {slide.process && (
               <div className="bg-white border-2 border-purple-300 p-4 rounded-lg mb-4">
                 <h3 className="font-bold text-purple-900 mb-3">Process:</h3>
                 <ol className="space-y-2">
-                  {slide.process.map((step, idx) => (
-                    <li key={idx} className="text-sm">{step}</li>
-                  ))}
+                  {(slide.process as string[]).map((step: string, idx: number) => <li key={idx} className="text-sm">{step}</li>)}
                 </ol>
               </div>
             )}
-
             {slide.selectionStrategies && (
               <div className="space-y-3 mb-4">
                 <h3 className="font-bold text-gray-800">Selection Strategies:</h3>
-                {slide.selectionStrategies.map((strat, idx) => (
+                {(slide.selectionStrategies as AnySlide[]).map((strat: AnySlide, idx: number) => (
                   <div key={idx} className="bg-gray-50 p-3 rounded">
                     <h4 className="font-bold text-gray-900 text-sm mb-1">{strat.name}</h4>
                     <p className="text-xs mb-1"><strong>Criterion:</strong> {strat.criterion}</p>
@@ -771,18 +617,16 @@ const SlideShow = () => {
                 ))}
               </div>
             )}
-
             {slide.aiExample && (
               <div className="bg-gray-100 p-4 rounded-lg">
                 <h3 className="text-lg font-bold mb-2 text-gray-800">Example: {slide.aiExample.scenario}</h3>
-                {Object.entries(slide.aiExample).filter(([key]) => key !== 'scenario').map(([key, value], idx) => (
+                {Object.entries(slide.aiExample as Record<string, string>).filter(([key]) => key !== 'scenario').map(([key, value], idx) => (
                   <p key={idx} className="text-sm mb-1"><span className="font-semibold capitalize">{key}:</span> {value}</p>
                 ))}
               </div>
             )}
           </div>
         );
-
       case 'comparison':
         return (
           <div className="p-12 h-full flex flex-col">
@@ -791,15 +635,15 @@ const SlideShow = () => {
               <table className="w-full border-collapse text-sm">
                 <thead>
                   <tr className="bg-purple-700 text-white">
-                    {slide.headers.map((header, idx) => (
+                    {(slide.headers as string[]).map((header: string, idx: number) => (
                       <th key={idx} className="p-2 text-left">{header}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {slide.rows.map((row, idx) => (
+                  {(slide.rows as string[][]).map((row: string[], idx: number) => (
                     <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                      {row.map((cell, cellIdx) => (
+                      {row.map((cell: string, cellIdx: number) => (
                         <td key={cellIdx} className="p-2 border-b border-gray-200">{cell}</td>
                       ))}
                     </tr>
@@ -809,102 +653,62 @@ const SlideShow = () => {
             </div>
           </div>
         );
-
       case 'practicalConsiderations':
         return (
           <div className="p-8 h-full flex flex-col overflow-y-auto">
             <h2 className="text-3xl font-bold mb-6 text-purple-800">{slide.title}</h2>
             <div className="space-y-5">
-              {slide.considerations.map((consideration, idx) => (
+              {(slide.considerations as AnySlide[]).map((c: AnySlide, idx: number) => (
                 <div key={idx} className="bg-white border-2 border-purple-200 p-4 rounded-lg">
-                  <h3 className="text-xl font-bold text-purple-900 mb-2">{consideration.aspect}</h3>
-                  <p className="text-sm text-purple-700 mb-3"><em>Importance: {consideration.importance}</em></p>
-                  
-                  {consideration.guidelines && (
+                  <h3 className="text-xl font-bold text-purple-900 mb-2">{c.aspect}</h3>
+                  <p className="text-sm text-purple-700 mb-3"><em>Importance: {c.importance}</em></p>
+
+                  {c.guidelines && (
                     <div className="mb-3">
                       <p className="font-semibold text-sm mb-1">Guidelines:</p>
-                      <ul className="space-y-1">
-                        {consideration.guidelines.map((g, gIdx) => (
-                          <li key={gIdx} className="text-xs">• {g}</li>
-                        ))}
-                      </ul>
+                      <ul className="space-y-1">{(c.guidelines as string[]).map((g: string, i: number) => <li key={i} className="text-xs">• {g}</li>)}</ul>
                     </div>
                   )}
-
-                  {consideration.techniques && (
+                  {c.techniques && (
                     <div className="mb-3">
                       <p className="font-semibold text-sm mb-1">Techniques:</p>
-                      <ul className="space-y-1">
-                        {consideration.techniques.map((t, tIdx) => (
-                          <li key={tIdx} className="text-xs">• {t}</li>
-                        ))}
-                      </ul>
+                      <ul className="space-y-1">{(c.techniques as string[]).map((t: string, i: number) => <li key={i} className="text-xs">• {t}</li>)}</ul>
                     </div>
                   )}
-
-                  {consideration.rules_of_thumb && (
+                  {c.rules_of_thumb && (
                     <div className="mb-3">
                       <p className="font-semibold text-sm mb-1">Rules of Thumb:</p>
-                      <ul className="space-y-1">
-                        {consideration.rules_of_thumb.map((r, rIdx) => (
-                          <li key={rIdx} className="text-xs">• {r}</li>
-                        ))}
-                      </ul>
+                      <ul className="space-y-1">{(c.rules_of_thumb as string[]).map((r: string, i: number) => <li key={i} className="text-xs">• {r}</li>)}</ul>
                     </div>
                   )}
-
-                  {consideration.challenges && (
+                  {c.challenges && (
                     <div className="mb-3">
                       <p className="font-semibold text-sm mb-1">Challenges:</p>
-                      <ul className="space-y-1">
-                        {consideration.challenges.map((c, cIdx) => (
-                          <li key={cIdx} className="text-xs text-red-700">• {c}</li>
-                        ))}
-                      </ul>
+                      <ul className="space-y-1">{(c.challenges as string[]).map((ch: string, i: number) => <li key={i} className="text-xs text-red-700">• {ch}</li>)}</ul>
                     </div>
                   )}
-
-                  {consideration.strategies && (
+                  {c.strategies && (
                     <div className="mb-3">
                       <p className="font-semibold text-sm mb-1">Strategies:</p>
-                      <ul className="space-y-1">
-                        {consideration.strategies.map((s, sIdx) => (
-                          <li key={sIdx} className="text-xs text-green-700">• {s}</li>
-                        ))}
-                      </ul>
+                      <ul className="space-y-1">{(c.strategies as string[]).map((s: string, i: number) => <li key={i} className="text-xs text-green-700">• {s}</li>)}</ul>
                     </div>
                   )}
-
-                  {consideration.common_mistakes && (
+                  {c.common_mistakes && (
                     <div className="bg-red-50 p-2 rounded">
                       <p className="font-semibold text-sm text-red-900 mb-1">⚠️ Common Mistakes:</p>
-                      <ul className="space-y-1">
-                        {consideration.common_mistakes.map((m, mIdx) => (
-                          <li key={mIdx} className="text-xs text-red-800">• {m}</li>
-                        ))}
-                      </ul>
+                      <ul className="space-y-1">{(c.common_mistakes as string[]).map((m: string, i: number) => <li key={i} className="text-xs text-red-800">• {m}</li>)}</ul>
                     </div>
                   )}
-
-                  {consideration.decision_factors && (
+                  {c.decision_factors && (
                     <div className="bg-blue-50 p-2 rounded mt-2">
                       <p className="font-semibold text-sm text-blue-900 mb-1">Decision Factors:</p>
-                      <ul className="space-y-1">
-                        {consideration.decision_factors.map((d, dIdx) => (
-                          <li key={dIdx} className="text-xs text-blue-800">• {d}</li>
-                        ))}
-                      </ul>
+                      <ul className="space-y-1">{(c.decision_factors as string[]).map((d: string, i: number) => <li key={i} className="text-xs text-blue-800">• {d}</li>)}</ul>
                     </div>
                   )}
-
-                  {consideration.statistical_approach && (
+                  {c.statistical_approach && (
                     <div className="bg-green-50 p-2 rounded mt-2">
                       <p className="font-semibold text-sm text-green-900 mb-1">Statistical Approach:</p>
-                      <ul className="space-y-1">
-                        {consideration.statistical_approach.map((s, sIdx) => (
-                          <li key={sIdx} className="text-xs text-green-800">• {s}</li>
-                        ))}
-                      </ul>
+                      <ul className="space-y-1">{(c.statistical_approach as string[]).map((sa: string, i: number) => <li key={i} className="text-xs text-green-800">• {sa}</li>)}</ul>
                     </div>
                   )}
                 </div>
@@ -912,13 +716,12 @@ const SlideShow = () => {
             </div>
           </div>
         );
-
       case 'bestPractices':
         return (
           <div className="p-10 h-full flex flex-col overflow-y-auto">
             <h2 className="text-3xl font-bold mb-6 text-purple-800">{slide.title}</h2>
             <div className="space-y-4">
-              {slide.practices.map((prac, idx) => (
+              {(slide.practices as AnySlide[]).map((prac: AnySlide, idx: number) => (
                 <div key={idx} className="bg-purple-50 border-l-4 border-purple-600 p-4 rounded">
                   <h3 className="text-lg font-bold text-purple-900 mb-2">{prac.practice}</h3>
                   <p className="text-sm mb-2"><span className="font-semibold">Why:</span> {prac.rationale}</p>
@@ -928,13 +731,12 @@ const SlideShow = () => {
             </div>
           </div>
         );
-
       case 'summary':
         return (
           <div className="p-10 h-full flex flex-col bg-gradient-to-br from-purple-50 to-white overflow-y-auto">
             <h2 className="text-4xl font-bold mb-8 text-purple-800">{slide.title}</h2>
             <div className="space-y-4 mb-6">
-              {slide.keyPoints.map((kp, idx) => (
+              {(slide.keyPoints as AnySlide[]).map((kp: AnySlide, idx: number) => (
                 <div key={idx} className="bg-white border-l-4 border-purple-500 p-5 rounded-lg shadow-sm">
                   <h3 className="font-bold text-xl text-purple-900 mb-2">{idx + 1}. {kp.point}</h3>
                   <p className="text-lg text-gray-700">{kp.detail}</p>
@@ -946,7 +748,6 @@ const SlideShow = () => {
             </div>
           </div>
         );
-
       default:
         return (
           <div className="flex items-center justify-center h-full">
@@ -959,9 +760,8 @@ const SlideShow = () => {
   return (
     <div className="w-full h-screen flex flex-col bg-gray-100">
       <div className="flex-1 bg-white shadow-lg mx-8 my-4 rounded-lg overflow-hidden">
-        {renderSlide(slides[currentSlide])}
+        {renderSlide(slides[currentSlide] as AnySlide)}
       </div>
-      
       <div className="bg-gray-800 text-white p-4 flex items-center justify-between">
         <button
           onClick={prevSlide}
@@ -973,21 +773,15 @@ const SlideShow = () => {
           <ChevronLeft className="w-5 h-5 mr-2" />
           Previous
         </button>
-        
         <div className="text-center">
           <p className="text-lg font-semibold">Slide {currentSlide + 1} of {slides.length}</p>
           <p className="text-sm text-gray-300">Part 3: Sampling Techniques - Theory & Practice</p>
         </div>
-        
         <div className="flex items-center gap-4">
-          <button
-            onClick={downloadAsHTML}
-            className="flex items-center px-6 py-3 rounded-lg font-semibold bg-blue-600 hover:bg-blue-700 transition-all"
-          >
+          <button onClick={downloadAsHTML} className="flex items-center px-6 py-3 rounded-lg font-semibold bg-blue-600 hover:bg-blue-700 transition-all">
             <Download className="w-5 h-5 mr-2" />
             Download HTML
           </button>
-          
           <button
             onClick={nextSlide}
             disabled={currentSlide === slides.length - 1}
@@ -1005,4 +799,3 @@ const SlideShow = () => {
 };
 
 export default SlideShow;
-                

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Download, Database } from 'lucide-react';
 
-const SlideShow = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+const SlideShow: React.FC = () => {
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
 
   const slides = [
     {
@@ -29,20 +29,21 @@ const SlideShow = () => {
     {
       type: 'definition',
       title: 'Data Collection: Statistical Framing',
-      definition: 'Systematic gathering of observations from a target population or data-generating process to enable statistical inference or learning',
+      definition:
+        'Systematic gathering of observations from a target population or data-generating process to enable statistical inference or learning',
       components: [
-        { 
-          label: 'Population Definition', 
+        {
+          label: 'Population Definition',
           desc: 'What are we trying to learn about?',
           example: 'All possible customer transactions, All medical images of disease X'
         },
-        { 
-          label: 'Sampling Frame', 
+        {
+          label: 'Sampling Frame',
           desc: 'The accessible subset of the population',
           example: 'Customers who opted in, Images from partnered hospitals'
         },
-        { 
-          label: 'Measurement Process', 
+        {
+          label: 'Measurement Process',
           desc: 'How observations are recorded and stored',
           example: 'Database logs, Image capture protocols, Sensor readings'
         }
@@ -51,7 +52,8 @@ const SlideShow = () => {
     {
       type: 'gapConcept',
       title: 'The Critical Gap: Population vs. Sampling Frame',
-      concept: 'In AI, there is almost always a gap between what we want to learn about (population) and what we can access (sampling frame)',
+      concept:
+        'In AI, there is almost always a gap between what we want to learn about (population) and what we can access (sampling frame)',
       examples: [
         {
           population: 'All human faces globally',
@@ -323,7 +325,7 @@ const SlideShow = () => {
       ],
       transition: 'Next: How do we sample from collected data to create training sets?'
     }
-  ];
+  ] as const;
 
   const nextSlide = () => {
     if (currentSlide < slides.length - 1) setCurrentSlide(currentSlide + 1);
@@ -333,6 +335,7 @@ const SlideShow = () => {
     if (currentSlide > 0) setCurrentSlide(currentSlide - 1);
   };
 
+  // ---- Download HTML helpers ----
   const downloadAsHTML = () => {
     const htmlContent = generateFullHTML();
     const blob = new Blob([htmlContent], { type: 'text/html' });
@@ -346,7 +349,7 @@ const SlideShow = () => {
     URL.revokeObjectURL(url);
   };
 
-  const generateFullHTML = () => {
+  const generateFullHTML = (): string => {
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -371,12 +374,12 @@ const SlideShow = () => {
     </style>
 </head>
 <body>
-    ${slides.map((slide, idx) => generateSlideHTML(slide, idx + 1)).join('')}
+    ${slides.map((slide: any, idx: number) => generateSlideHTML(slide, idx + 1)).join('')}
 </body>
 </html>`;
   };
 
-  const generateSlideHTML = (slide, num) => {
+  const generateSlideHTML = (slide: any, num: number): string => {
     let content = '';
     switch (slide.type) {
       case 'title':
@@ -386,11 +389,11 @@ const SlideShow = () => {
         break;
       case 'overview':
         content = `<h1>${slide.title}</h1><p class="subtitle">${slide.duration}</p>
-          <ul>${slide.topics.map(t => `<li>${t}</li>`).join('')}</ul>`;
+          <ul>${(slide.topics as string[]).map((t: string) => `<li>${t}</li>`).join('')}</ul>`;
         break;
       case 'definition':
         content = `<h1>${slide.title}</h1><div class="definition">${slide.definition}</div>
-          ${slide.components.map(c => `<div class="box"><h3>${c.label}</h3><p>${c.desc}</p><p><em>${c.example}</em></p></div>`).join('')}`;
+          ${(slide.components as any[]).map((c: any) => `<div class="box"><h3>${c.label}</h3><p>${c.desc}</p><p><em>${c.example}</em></p></div>`).join('')}`;
         break;
       default:
         content = `<h1>${slide.title || 'Slide'}</h1><p>Content for ${slide.type}</p>`;
@@ -398,7 +401,8 @@ const SlideShow = () => {
     return `<div class="slide">${content}</div>`;
   };
 
-  const renderSlide = (slide) => {
+  // ---- Renderer ----
+  const renderSlide = (slide: any) => {
     switch (slide.type) {
       case 'title':
         return (
@@ -418,7 +422,7 @@ const SlideShow = () => {
             <h2 className="text-4xl font-bold mb-3 text-green-800">{slide.title}</h2>
             <p className="text-xl text-gray-600 mb-6">Duration: {slide.duration}</p>
             <div className="space-y-4">
-              {slide.topics.map((topic, idx) => (
+              {(slide.topics as string[]).map((topic: string, idx: number) => (
                 <div key={idx} className="flex items-start bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
                   <span className="text-green-600 font-bold mr-4 text-xl">{idx + 1}</span>
                   <p className="text-lg">{topic}</p>
@@ -436,7 +440,7 @@ const SlideShow = () => {
               <p className="text-xl font-semibold text-green-900">{slide.definition}</p>
             </div>
             <div className="space-y-4">
-              {slide.components.map((comp, idx) => (
+              {(slide.components as any[]).map((comp: any, idx: number) => (
                 <div key={idx} className="bg-white border-2 border-gray-200 p-5 rounded-lg">
                   <h3 className="text-xl font-bold text-gray-800 mb-2">{comp.label}</h3>
                   <p className="text-lg text-gray-700 mb-2">{comp.desc}</p>
@@ -455,7 +459,7 @@ const SlideShow = () => {
               <p className="text-lg font-semibold text-yellow-900">{slide.concept}</p>
             </div>
             <div className="space-y-4">
-              {slide.examples.map((ex, idx) => (
+              {(slide.examples as any[]).map((ex: any, idx: number) => (
                 <div key={idx} className="bg-white border-2 border-orange-300 p-4 rounded-lg">
                   <div className="grid grid-cols-2 gap-3 mb-3">
                     <div>
@@ -467,8 +471,12 @@ const SlideShow = () => {
                       <p className="text-base">{ex.frame}</p>
                     </div>
                   </div>
-                  <p className="text-sm mb-2"><span className="font-semibold text-red-700">Gap:</span> {ex.gap}</p>
-                  <p className="text-sm"><span className="font-semibold text-blue-700">Impact:</span> {ex.impact}</p>
+                  <p className="text-sm mb-2">
+                    <span className="font-semibold text-red-700">Gap:</span> {ex.gap}
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-semibold text-blue-700">Impact:</span> {ex.impact}
+                  </p>
                 </div>
               ))}
             </div>
@@ -483,34 +491,44 @@ const SlideShow = () => {
           <div className="p-10 h-full flex flex-col overflow-y-auto">
             <h2 className="text-3xl font-bold mb-2 text-green-800">{slide.title}</h2>
             <p className="text-lg text-gray-600 mb-4">{slide.subtitle}</p>
-            
+
             <h3 className="text-xl font-bold mb-3 text-gray-800">Characteristics:</h3>
             <ul className="space-y-2 mb-4">
-              {slide.characteristics.map((char, idx) => (
+              {(slide.characteristics as string[]).map((char: string, idx: number) => (
                 <li key={idx} className="flex items-start text-base">
                   <span className="text-green-600 mr-3">•</span>
                   <span>{char}</span>
                 </li>
               ))}
             </ul>
-            
+
             <h3 className="text-xl font-bold mb-3 text-gray-800">AI Applications:</h3>
             <div className="grid grid-cols-2 gap-3 mb-4">
-              {slide.aiApplications.map((app, idx) => (
+              {(slide.aiApplications as any[]).map((app: any, idx: number) => (
                 <div key={idx} className="bg-blue-50 p-3 rounded border-l-4 border-blue-500">
                   <p className="font-semibold text-sm text-blue-900">{app.domain}</p>
                   <p className="text-xs text-gray-700">{app.example}</p>
                 </div>
               ))}
             </div>
-            
+
             <div className="bg-gray-100 p-4 rounded-lg">
               <h3 className="text-lg font-bold mb-2 text-gray-800">Example: {slide.detailedExample.scenario}</h3>
-              <p className="text-sm mb-1"><span className="font-semibold">Process:</span> {slide.detailedExample.process}</p>
-              <p className="text-sm mb-1"><span className="font-semibold">Population:</span> {slide.detailedExample.population}</p>
-              <p className="text-sm mb-1"><span className="font-semibold">Reality:</span> {slide.detailedExample.reality}</p>
-              <p className="text-sm mb-1 text-red-700"><span className="font-semibold">Issue:</span> {slide.detailedExample.statisticalIssue}</p>
-              <p className="text-sm text-green-700"><span className="font-semibold">Mitigation:</span> {slide.detailedExample.mitigation}</p>
+              <p className="text-sm mb-1">
+                <span className="font-semibold">Process:</span> {slide.detailedExample.process}
+              </p>
+              <p className="text-sm mb-1">
+                <span className="font-semibold">Population:</span> {slide.detailedExample.population}
+              </p>
+              <p className="text-sm mb-1">
+                <span className="font-semibold">Reality:</span> {slide.detailedExample.reality}
+              </p>
+              <p className="text-sm mb-1 text-red-700">
+                <span className="font-semibold">Issue:</span> {slide.detailedExample.statisticalIssue}
+              </p>
+              <p className="text-sm text-green-700">
+                <span className="font-semibold">Mitigation:</span> {slide.detailedExample.mitigation}
+              </p>
             </div>
           </div>
         );
@@ -522,16 +540,20 @@ const SlideShow = () => {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-green-700 text-white">
-                  {slide.headers.map((header, idx) => (
-                    <th key={idx} className="p-3 text-left text-sm">{header}</th>
+                  {(slide.headers as string[]).map((header: string, idx: number) => (
+                    <th key={idx} className="p-3 text-left text-sm">
+                      {header}
+                    </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {slide.rows.map((row, idx) => (
+                {(slide.rows as string[][]).map((row: string[], idx: number) => (
                   <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                    {row.map((cell, cellIdx) => (
-                      <td key={cellIdx} className="p-3 text-sm border-b border-gray-200">{cell}</td>
+                    {row.map((cell: string, cellIdx: number) => (
+                      <td key={cellIdx} className="p-3 text-sm border-b border-gray-200">
+                        {cell}
+                      </td>
                     ))}
                   </tr>
                 ))}
@@ -546,13 +568,23 @@ const SlideShow = () => {
             <h2 className="text-3xl font-bold mb-2 text-green-800">{slide.title}</h2>
             <p className="text-lg text-gray-600 mb-4">{slide.subtitle}</p>
             <div className="space-y-3">
-              {slide.dimensions.map((dim, idx) => (
+              {(slide.dimensions as any[]).map((dim: any, idx: number) => (
                 <div key={idx} className="bg-white border-l-4 border-green-500 p-4 rounded shadow-sm">
-                  <h3 className="text-lg font-bold text-green-900 mb-1">{idx + 1}. {dim.name}</h3>
-                  <p className="text-sm mb-1"><span className="font-semibold">Definition:</span> {dim.definition}</p>
-                  <p className="text-sm mb-1"><span className="font-semibold">AI Context:</span> {dim.aiContext}</p>
-                  <p className="text-xs text-gray-600 mb-1"><em>Example: {dim.example}</em></p>
-                  <p className="text-xs text-red-700"><strong>Failure:</strong> {dim.failure}</p>
+                  <h3 className="text-lg font-bold text-green-900 mb-1">
+                    {idx + 1}. {dim.name}
+                  </h3>
+                  <p className="text-sm mb-1">
+                    <span className="font-semibold">Definition:</span> {dim.definition}
+                  </p>
+                  <p className="text-sm mb-1">
+                    <span className="font-semibold">AI Context:</span> {dim.aiContext}
+                  </p>
+                  <p className="text-xs text-gray-600 mb-1">
+                    <em>Example: {dim.example}</em>
+                  </p>
+                  <p className="text-xs text-red-700">
+                    <strong>Failure:</strong> {dim.failure}
+                  </p>
                 </div>
               ))}
             </div>
@@ -565,7 +597,7 @@ const SlideShow = () => {
             <h2 className="text-3xl font-bold mb-2 text-green-800">{slide.title}</h2>
             <p className="text-lg text-gray-600 mb-6">{slide.subtitle}</p>
             <div className="space-y-4">
-              {slide.tradeoffs.map((trade, idx) => (
+              {(slide.tradeoffs as any[]).map((trade: any, idx: number) => (
                 <div key={idx} className="bg-white border-2 border-gray-300 p-4 rounded-lg">
                   <h3 className="text-lg font-bold text-gray-800 mb-3">{trade.dimension}</h3>
                   <div className="grid grid-cols-2 gap-4 mb-3">
@@ -578,7 +610,9 @@ const SlideShow = () => {
                       <p className="text-sm">{trade.option2}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-700"><span className="font-semibold">Consider:</span> {trade.consideration}</p>
+                  <p className="text-sm text-gray-700">
+                    <span className="font-semibold">Consider:</span> {trade.consideration}
+                  </p>
                 </div>
               ))}
             </div>
@@ -590,7 +624,7 @@ const SlideShow = () => {
           <div className="p-10 h-full flex flex-col overflow-y-auto">
             <h2 className="text-3xl font-bold mb-6 text-green-800">{slide.title}</h2>
             <div className="space-y-3">
-              {slide.practices.map((prac, idx) => (
+              {(slide.practices as any[]).map((prac: any, idx: number) => (
                 <div key={idx} className="bg-green-50 border-l-4 border-green-600 p-4 rounded">
                   <h3 className="text-lg font-bold text-green-900 mb-2">{prac.practice}</h3>
                   <p className="text-base text-gray-700">{prac.detail}</p>
@@ -605,9 +639,11 @@ const SlideShow = () => {
           <div className="p-10 h-full flex flex-col bg-gradient-to-br from-green-50 to-white overflow-y-auto">
             <h2 className="text-4xl font-bold mb-8 text-green-800">{slide.title}</h2>
             <div className="space-y-4 mb-6">
-              {slide.keyPoints.map((kp, idx) => (
+              {(slide.keyPoints as any[]).map((kp: any, idx: number) => (
                 <div key={idx} className="bg-white border-l-4 border-green-500 p-5 rounded-lg shadow-sm">
-                  <h3 className="font-bold text-xl text-green-900 mb-2">{idx + 1}. {kp.point}</h3>
+                  <h3 className="font-bold text-xl text-green-900 mb-2">
+                    {idx + 1}. {kp.point}
+                  </h3>
                   <p className="text-lg text-gray-700">{kp.detail}</p>
                 </div>
               ))}
@@ -632,7 +668,7 @@ const SlideShow = () => {
       <div className="flex-1 bg-white shadow-lg mx-8 my-4 rounded-lg overflow-hidden">
         {renderSlide(slides[currentSlide])}
       </div>
-      
+
       <div className="bg-gray-800 text-white p-4 flex items-center justify-between">
         <button
           onClick={prevSlide}
@@ -644,12 +680,14 @@ const SlideShow = () => {
           <ChevronLeft className="w-5 h-5 mr-2" />
           Previous
         </button>
-        
+
         <div className="text-center">
-          <p className="text-lg font-semibold">Slide {currentSlide + 1} of {slides.length}</p>
+          <p className="text-lg font-semibold">
+            Slide {currentSlide + 1} of {slides.length}
+          </p>
           <p className="text-sm text-gray-300">Part 2: Data Collection - Concepts & Techniques</p>
         </div>
-        
+
         <div className="flex items-center gap-4">
           <button
             onClick={downloadAsHTML}
@@ -658,12 +696,14 @@ const SlideShow = () => {
             <Download className="w-5 h-5 mr-2" />
             Download HTML
           </button>
-          
+
           <button
             onClick={nextSlide}
             disabled={currentSlide === slides.length - 1}
             className={`flex items-center px-6 py-3 rounded-lg font-semibold transition-all ${
-              currentSlide === slides.length - 1 ? 'bg-gray-600 cursor-not-allowed opacity-50' : 'bg-green-600 hover:bg-green-700'
+              currentSlide === slides.length - 1
+                ? 'bg-gray-600 cursor-not-allowed opacity-50'
+                : 'bg-green-600 hover:bg-green-700'
             }`}
           >
             Next
@@ -676,4 +716,3 @@ const SlideShow = () => {
 };
 
 export default SlideShow;
-            

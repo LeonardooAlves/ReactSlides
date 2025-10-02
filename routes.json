@@ -11,42 +11,42 @@
   "routes": [
     {
       "path": "/",
-      "file": "home.pdf",
+      "file": "IndexSlide.pdf",
       "waitForSelector": "#content-ready"
     },
     {
       "path": "/slide1",
-      "file": "slide1.pdf",
+      "file": "Slide1.pdf",
       "waitForSelector": "#content-ready"
     },
     {
       "path": "/slide2",
-      "file": "slide2.pdf",
+      "file": "Slide2.pdf",
       "waitForSelector": "#content-ready"
     },
     {
       "path": "/slide3",
-      "file": "slide3.pdf",
+      "file": "Slide3.pdf",
       "waitForSelector": "#content-ready"
     },
     {
       "path": "/slide4",
-      "file": "slide4.pdf",
+      "file": "Slide4.pdf",
       "waitForSelector": "#content-ready"
     },
     {
       "path": "/slide5",
-      "file": "slide5.pdf",
+      "file": "Slide5.pdf",
       "waitForSelector": "#content-ready"
     },
     {
       "path": "/slide6",
-      "file": "slide6.pdf",
+      "file": "Slide6.pdf",
       "waitForSelector": "#content-ready"
     },
     {
       "path": "/slide7",
-      "file": "slide7.pdf",
+      "file": "Slide7.pdf",
       "waitForSelector": "#content-ready"
     }
   ]

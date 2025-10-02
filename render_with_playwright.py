@@ -59,7 +59,7 @@ async def render(config_path: str):
                 print(f"  [warn] navigation status: {resp.status if resp else 'NO RESPONSE'}")
 
             if wait_for_selector:
-                await page.wait_for_selector(wait_for_selector, timeout=120000)
+                await page.wait_for_selector("#content-ready[data-ready='1']", state="attached", timeout=120000)
 
             if wait_for > 0:
                 await page.wait_for_timeout(wait_for)

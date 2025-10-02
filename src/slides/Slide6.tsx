@@ -8,13 +8,13 @@ const SlideShow: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
   // ⬇️ Keep your existing slides array here. This stub keeps the file compiling if slides are empty.
-  const slides = ([
-    // Example structure (safe to delete/replace with your real array):
-    // {
-    //   type: 'title',
-    //   content: { title: 'Synthetic Data Techniques', subtitle: 'Part 6', details: 'Statistics for AI', course: 'MSc AAI' }
-    // }
-  ] as unknown as AnySlide[]) || [];
+  const slides: AnySlide[] = [
+  // Example structure (safe to delete/replace with your real array):
+  // {
+  //   type: 'title',
+  //   content: { title: 'Synthetic Data Techniques', subtitle: 'Part 6', details: 'Statistics for AI', course: 'MSc AAI' }
+  // }
+ ];
 
   const nextSlide = () => currentSlide < slides.length - 1 && setCurrentSlide(currentSlide + 1);
   const prevSlide = () => currentSlide > 0 && setCurrentSlide(currentSlide - 1);

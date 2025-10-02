@@ -1,0 +1,22 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "outDir": "pdf-exports",
+  "viewport": {
+    "width": 1280,
+    "height": 800,
+    "deviceScaleFactor": 2
+  },
+  "waitUntil": "networkidle",
+  "waitFor": 500,
+  "routes": [
+    {
+      "path": "/",
+      "file": "home.pdf",
+      "waitForSelector": "#content-ready"
+    },
+    {
+      "path": "/about",
+      "file": "about.pdf"
+    }
+  ]
+}

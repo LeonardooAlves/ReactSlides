@@ -1,0 +1,7 @@
+/* Optional @media print overrides for cleaner PDFs */
+@page { size: A4; margin: 12mm; }
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+nav, .sidebar, .no-print { display: none !important; }
+main, .content, #root, #__next { width: 100% !important; max-width: 100% !important; }
+section { break-inside: avoid; page-break-inside: avoid; }
+.page-break { page-break-before: always; break-before: page; }
